@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF AIM AI | ตัวช่วยตั้งค่า Free Fire</title>
+<style>
+:root{--red:#ff2638;--dark:#090909;--panel:#151515;--muted:#aaa;--white:#f6f6f6}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 15% 0%,#3b080d 0,transparent 35%),linear-gradient(135deg,#080808,#171010 55%,#050505);color:var(--white);font-family:system-ui,-apple-system,"Noto Sans Thai",sans-serif;min-height:100vh}
+header{padding:28px 18px 18px;text-align:center;border-bottom:1px solid #5d171d;background:linear-gradient(90deg,#090909,#27070b,#090909)}
+.logo{font-weight:950;letter-spacing:1.5px;font-size:clamp(26px,6vw,42px)}.logo span{color:var(--red)}
+header p{color:#c9bfc0;margin:6px 0 0;font-size:14px}
+main{max-width:900px;margin:auto;padding:18px 14px 40px}
+.card{background:linear-gradient(145deg,#171717,#0e0e0e);border:1px solid #462025;border-radius:16px;padding:18px;margin:14px 0;box-shadow:0 8px 26px #0008}
+h2{font-size:18px;margin:0 0 14px}h2 .n{color:var(--red)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.mode{border:1px solid #52232a;background:#101010;color:#eee;border-radius:12px;padding:14px 8px;cursor:pointer;text-align:center;transition:.15s}
+.mode strong{display:block;font-size:15px}.mode small{display:block;color:#aaa;font-size:11px;margin-top:5px}
+.mode.active{background:linear-gradient(135deg,#4b080f,#1a080a);border:1px solid var(--red);box-shadow:0 0 0 1px #ff263833,0 0 18px #ff26381b}
+label{display:block;font-size:13px;color:#ddd;margin:13px 0 6px}
+input,select{width:100%;background:#080808;border:1px solid #414141;color:#fff;padding:12px;border-radius:9px;font:inherit;outline:none}
+input:focus,select:focus{border-color:var(--red)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{font-size:12px;color:#aaa;line-height:1.6;margin-top:7px}
+button.primary{width:100%;margin-top:17px;padding:14px;border:0;border-radius:10px;background:linear-gradient(90deg,#a90d1b,#ff2638);color:white;font-size:16px;font-weight:800;cursor:pointer}
+button.primary:active{transform:scale(.99)}
+.result{display:none}.result.show{display:block}
+.result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.pill{border:1px solid #5b2027;color:#ff6874;border-radius:99px;padding:5px 10px;font-size:12px}
+.settings{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.setting{background:#090909;border:1px solid #292929;border-radius:11px;padding:13px}
+.setting span{display:block;color:#aaa;font-size:12px}.setting strong{font-size:25px;color:#ff4858}
+.setting small{color:#999;font-size:11px}
+.note{border-left:3px solid var(--red);padding:10px 12px;background:#23090c;border-radius:0 8px 8px 0;color:#e7d5d6;font-size:13px;line-height:1.65;margin-top:14px}
+.status{font-size:14px;line-height:1.6;margin-top:12px}
+footer{text-align:center;color:#777;font-size:11px;padding:0 18px 25px}
+@media(max-width:520px){.row{grid-template-columns:1fr}.mode{padding:12px 4px}.mode strong{font-size:13px}.settings{gap:8px}.setting strong{font-size:22px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">FF <span>AIM AI</span></div>
+  <p>ตัวช่วยคิดค่าความไว Free Fire • ธีมดำแดง</p>
+</header>
+<main>
+  <section class="card">
+    <h2><span class="n">01</span> เลือกสไตล์การเล่น</h2>
+    <div class="modes" role="group" aria-label="โหมดการเล่น">
+      <button class="mode active" data-mode="highlight" type="button"><strong>🔥 ไฮไลท์</strong><small>ลูกซอง • ปืนพก • สไนเปอร์</small></button>
+      <button class="mode" data-mode="balanced" type="button"><strong>⚖️ สมดุล</strong><small>เล่นได้ทุกประเภทปืน</small></button>
+      <button class="mode" data-mode="league" type="button"><strong>🏆 ลีก</strong><small>M590 • สไนเปอร์</small></button>
+    </div>
+    <div class="hint" id="modeDesc">เน้นการลากเป้าเร็ว เหมาะกับการเล่นระยะใกล้และยิงทีละนัด</div>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">02</span> ข้อมูลโทรศัพท์และการเล่น</h2>
+    <label for="phone">รุ่นโทรศัพท์</label>
+    <input id="phone" placeholder="เช่น Infinix X6725" value="Infinix X6725">
+    <div class="row">
+      <div><label for="dpi">DPI (ถ้าทราบ)</label><input id="dpi" type="number" min="200" max="1200" placeholder="เช่น 742" value="742"></div>
+      <div><label for="scale">สเกลความไวสูงสุด</label><select id="scale"><option value="100">100</option><option value="200" selected>200</option></select></div>
+    </div>
+    <div class="row">
+      <div><label for="fingers">รูปแบบการควบคุม</label><select id="fingers"><option value="2">2 นิ้ว</option><option value="3">3 นิ้ว</option><option value="4">4 นิ้ว</option></select></div>
+      <div><label for="performance">สภาพเครื่อง</label><select id="performance"><option value="smooth">ลื่น / FPS คงที่</option><option value="average" selected>ทั่วไป</option><option value="lag">เครื่องกระตุก / เฟรมตก</option></select></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2><span class="n">03</span> ต้องการให้คิดค่าปืนไหนเป็นพิเศษ?</h2>
+    <label for="gun">ชื่อปืนใน Free Fire (ไม่ใส่ก็ได้)</label>
+    <input id="gun" placeholder="เช่น M590, M1887, AWM, Desert Eagle">
+    <div class="hint">พิมพ์ชื่อปืนเพื่อให้ระบบตรวจจากรายชื่อปืนที่บันทึกไว้ หากไม่พบ ระบบจะแจ้งว่าไม่พบชื่อปืนนี้</div>
+    <button class="primary" id="generate" type="button">⚡ ให้ AI คิดค่าตั้งค่า</button>
+  </section>
+
+  <section class="card result" id="result" aria-live="polite">
+    <div class="result-head"><h2 style="margin:0">ผลการตั้งค่าที่แนะนำ</h2><span class="pill" id="modePill">โหมดไฮไลท์</span></div>
+    <div id="status" class="status"></div>
+    <div class="settings" id="settings"></div>
+    <div class="note" id="tip"></div>
+    <div class="row" style="margin-top:14px">
+      <button class="primary" id="copy" type="button" style="margin-top:0">คัดลอกค่าตั้งค่า</button>
+      <button class="primary" id="reset" type="button" style="margin-top:0;background:linear-gradient(90deg,#292929,#555);border:1px solid #777">↻ รีเซ็ต / คิดใหม่</button>
+    </div>
+    <p class="hint">หมายเหตุ: ค่านี้เป็นจุดเริ่มต้นที่ระบบคำนวณจากโหมด รุ่นเครื่อง DPI และสภาพเครื่อง ไม่ใช่ค่าที่รับประกันว่าจะยิงหัวได้ทุกครั้ง ควรทดลองใน Training Ground แล้วปรับทีละ 3–5 คะแนน</p>
+  </section>
+</main>
+<footer>แฟนเมดเพื่อช่วยวางแผนค่าตั้งค่า • ไม่ได้เชื่อมต่อเซิร์ฟเวอร์ Garena หรือดึงข้อมูลสดจากเกม</footer>
+<script>
+const modeButtons=[...document.querySelectorAll('.mode')];
+let selectedMode='highlight';
+const descriptions={
+ highlight:'เน้นการลากเป้าเร็ว เหมาะกับการเล่นระยะใกล้และยิงทีละนัด',
+ balanced:'กระจายค่าความไวให้ใช้งานได้หลากหลาย ทั้งระยะใกล้ กลาง และไกล',
+ league:'เน้นความนิ่งและการควบคุมจังหวะยิง โดยเฉพาะ M590 และสไนเปอร์'
+};
+modeButtons.forEach(btn=>btn.addEventListener('click',()=>{
+  selectedMode=btn.dataset.mode;
+  modeButtons.forEach(b=>b.classList.toggle('active',b===btn));
+  document.getElementById('modeDesc').textContent=descriptions[selectedMode];
+}));
+
+// รายชื่อปืนที่ระบบรู้จัก รวมชื่อภาษาอังกฤษที่ใช้กันทั่วไปและบางชื่อเรียก
+const guns={
+ 'm590':{name:'M590',type:'shotgun'},
+ 'm1887':{name:'M1887',type:'shotgun'},'m1014':{name:'M1014',type:'shotgun'},
+ 'mag-7':{name:'MAG-7',type:'shotgun'},'mag7':{name:'MAG-7',type:'shotgun'},
+ 'spas12':{name:'SPAS12',type:'shotgun'},'spas-12':{name:'SPAS12',type:'shotgun'},
+ 'charge buster':{name:'Charge Buster',type:'shotgun'},'trogon':{name:'Trogon',type:'shotgun'},
+ 'desert eagle':{name:'Desert Eagle',type:'pistol'},'m500':{name:'M500',type:'pistol'},
+ 'g18':{name:'G18',type:'pistol'},'usp':{name:'USP',type:'pistol'},
+ 'm1917':{name:'M1917',type:'pistol'},'mini uzi':{name:'Mini Uzi',type:'smg'},
+ 'uzi':{name:'UZI',type:'smg'},'mp40':{name:'MP40',type:'smg'},'mp5':{name:'MP5',type:'smg'},
+ 'ump':{name:'UMP',type:'smg'},'vector':{name:'Vector',type:'smg'},'thompson':{name:'Thompson',type:'smg'},
+ 'p90':{name:'P90',type:'smg'},'biz on':{name:'Bizon',type:'smg'},'bizon':{name:'Bizon',type:'smg'},
+ 'awm':{name:'AWM',type:'sniper'},'kar98k':{name:'Kar98k',type:'sniper'},'m82b':{name:'M82B',type:'sniper'},
+ 'ac80':{name:'AC80',type:'sniper'},'sks':{name:'SKS',type:'marksman'},'svd':{name:'SVD',type:'marksman'},
+ 'woodpecker':{name:'Woodpecker',type:'marksman'},'m14':{name:'M14',type:'marksman'},
+ 'scar':{name:'SCAR',type:'ar'},'ak':{name:'AK',type:'ar'},'ak47':{name:'AK47',type:'ar'},
+ 'm4a1':{name:'M4A1',type:'ar'},'xm8':{name:'XM8',type:'ar'},'famas':{name:'FAMAS',type:'ar'},
+ 'groza':{name:'Groza',type:'ar'},'aug':{name:'AUG',type:'ar'},'parafal':{name:'PARAFAL',type:'ar'},
+ 'an94':{name:'AN94',type:'ar'},'plasma':{name:'Plasma',type:'ar'},'kingfisher':{name:'Kingfisher',type:'ar'},
+ 'g36':{name:'G36',type:'ar'},'fgl24':{name:'FGL24',type:'special'},'m249':{name:'M249',type:'lmg'},
+ 'm60':{name:'M60',type:'lmg'},'kord':{name:'KORD',type:'lmg'},'gatling':{name:'Gatling',type:'lmg'},
+ 'rgs50':{name:'RGS50',type:'special'},'crossbow':{name:'Crossbow',type:'special'},
+ 'healing gun':{name:'Treatment Gun',type:'special'},'treatment gun':{name:'Treatment Gun',type:'special'}
+};
+function norm(s){return s.toLowerCase().trim().replace(/[._]/g,' ').replace(/\s+/g,' ')}
+function findGun(s){
+ const n=norm(s);
+ if(guns[n])return guns[n];
+ const key=Object.keys(guns).find(k=>norm(k)===n);
+ return key?guns[key]:null;
+}
+function clamp(v,min,max){return Math.max(min,Math.min(max,Math.round(v)))}
+function generate(){
+ const scale=Number(document.getElementById('scale').value);
+ const dpiRaw=Number(document.getElementById('dpi').value);
+ const dpi=dpiRaw>0?dpiRaw:480;
+ const phone=document.getElementById('phone').value.trim()||'ไม่ระบุรุ่น';
+ const performance=document.getElementById('performance').value;
+ const gunText=document.getElementById('gun').value.trim();
+ const gun=gunText?findGun(gunText):null;
+ const result=document.getElementById('result');
+ result.classList.add('show');
+ document.getElementById('modePill').textContent={highlight:'🔥 โหมดไฮไลท์',balanced:'⚖️ โหมดสมดุล',league:'🏆 โหมดลีก'}[selectedMode];
+ const status=document.getElementById('status');
+ const settings=document.getElementById('settings');
+ settings.innerHTML='';
+ if(gunText&&!gun){
+   status.innerHTML='<span style="color:#ff6470;font-weight:800">ไม่พบปืนชื่อนี้ในรายชื่อปืนที่ระบบรู้จัก</span><br>ลองตรวจการสะกดชื่อภาษาอังกฤษ เช่น M590, M1887, AWM หรือ Desert Eagle อีกครั้ง รายชื่อในระบบอาจไม่ครอบคลุมปืนทุกเวอร์ชัน';
+   document.getElementById('tip').textContent='ระบบยังไม่ได้สร้างค่าปืนเฉพาะ เพราะตรวจชื่อปืนไม่ผ่าน คุณยังสามารถลบชื่อปืนแล้วให้ระบบคิดค่าตามโหมดได้';
+   settings.innerHTML='';
+   result.scrollIntoView({behavior:'smooth',block:'start'});
+   return;
+ }
+ let base;
+ if(selectedMode==='highlight')base={general:194,red:188,scope2:178,scope4:160,sniper:105,free:150};
+ else if(selectedMode==='balanced')base={general:180,red:172,scope2:160,scope4:145,sniper:95,free:135};
+ else base={general:168,red:158,scope2:145,scope4:132,sniper:82,free:120};
+ // DPI สูงมากให้ลดค่าบางส่วนเพื่อชดเชยความไวของการลาก
+ const dpiAdjust=clamp((600-dpi)/35,-8,8);
+ Object.keys(base).forEach(k=>base[k]=clamp(base[k]+dpiAdjust,scale===200?0:0,scale));
+ if(performance==='lag'){base.general-=8;base.red-=7;base.scope2-=5;base.scope4-=4;base.sniper-=3;base.free-=4}
+ if(performance==='smooth'){base.general+=3;base.red+=3;base.scope2+=2}
+ if(selectedMode==='league'){base.sniper=clamp(base.sniper+4,0,scale);base.scope4=clamp(base.scope4+3,0,scale)}
+ if(gun){
+   if(gun.type==='shotgun'||gun.type==='pistol'){base.general=clamp(base.general+5,0,scale);base.red=clamp(base.red+4,0,scale)}
+   if(gun.type==='sniper'||gun.type==='marksman'){base.sniper=clamp(base.sniper+8,0,scale);base.scope4=clamp(base.scope4+4,0,scale)}
+   if(gun.type==='smg'){base.general=clamp(base.general+3,0,scale);base.red=clamp(base.red+2,0,scale)}
+ }
+ const labels=[['ทั่วไป','general'],['เรดดอท','red'],['กล้อง 2x','scope2'],['กล้อง 4x','scope4'],['สไนเปอร์','sniper'],['มองรอบตัว','free']];
+ status.innerHTML='รุ่นเครื่อง: <b>'+escapeHTML(phone)+'</b> • DPI: <b>'+dpi+'</b> • สเกล: <b>'+scale+'</b><br>'+(gun?'ตรวจพบชื่อปืน: <b style="color:#ff6874">'+gun.name+'</b>':'สร้างค่าตามโหมดที่เลือก')+'<br>การตั้งค่านี้เป็นค่าทดลองเริ่มต้นสำหรับอุปกรณ์ที่ระบุ';
+ labels.forEach(([label,key])=>{
+   const div=document.createElement('div');div.className='setting';
+   div.innerHTML='<span>'+label+'</span><strong>'+base[key]+'</strong><small>จากสเกล '+scale+'</small>';
+   settings.appendChild(div);
+ });
+ let tip='ลองเข้า Training Ground ลากเป้าในระยะที่ใช้จริง หากเป้าลอยข้ามหัวให้ลดทั่วไป/เรดดอท 3–5 คะแนน หากลากไม่ถึงให้เพิ่มทีละ 3–5 คะแนน';
+ if(selectedMode==='highlight')tip+=' โหมดนี้เหมาะกับการฝึกจังหวะยิงลูกซอง ปืนพก และสไนเปอร์';
+ if(selectedMode==='balanced')tip+=' ใช้เป็นค่ากลางก่อน แล้วปรับเฉพาะกล้องที่ใช้บ่อย';
+ if(selectedMode==='league')tip+=' ให้เน้นความนิ่งของกล้องซูมและจังหวะยิงมากกว่าการลากเร็วเกินไป';
+ if(performance==='lag')tip+=' เนื่องจากเลือกเครื่องกระตุก ควรลดกราฟิกและใช้ FPS ที่เครื่องรักษาได้สม่ำเสมอ';
+ document.getElementById('tip').textContent=tip;
+ result.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function escapeHTML(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+document.getElementById('generate').addEventListener('click',generate);
+document.getElementById('reset').addEventListener('click',()=>{
+  // เก็บข้อมูลโทรศัพท์และโหมดเดิมไว้ แล้วสร้างค่าชุดใหม่ที่ต่างจากรอบก่อน
+  if(!document.getElementById('result').classList.contains('show')){
+    generate();
+    return;
+  }
+  const scale=Number(document.getElementById('scale').value);
+  const settings=[...document.querySelectorAll('.setting strong')];
+  if(settings.length===0){ generate(); return; }
+  settings.forEach(el=>{
+    const old=Number(el.textContent);
+    const shift=(Math.random()<0.5?-1:1)*(5+Math.floor(Math.random()*11));
+    el.textContent=String(clamp(old+shift,0,scale));
+  });
+  const status=document.getElementById('status');
+  // ลบข้อความสถานะจากรอบก่อนก่อนเพิ่มข้อความใหม่ เพื่อไม่ให้ซ้ำทุกครั้งที่กดรีเซ็ต
+  const previousNotice=status.querySelector('.reset-notice');
+  if(previousNotice) previousNotice.remove();
+  const notice=document.createElement('div');
+  notice.className='reset-notice';
+  notice.style.cssText='color:#ff6874;font-weight:800;margin-top:6px';
+  notice.textContent='สร้างค่าชุดใหม่แล้ว — เก็บโหมด รุ่นเครื่อง DPI และชื่อปืนเดิมไว้';
+  status.appendChild(notice);
+  document.getElementById('tip').textContent='นี่คือค่าชุดทดลองใหม่ที่สุ่มปรับจากค่าก่อนหน้า หากยังไม่ถูกใจ กด “รีเซ็ต / คิดใหม่” อีกครั้ง หรือกด “ให้ AI คิดค่าตั้งค่า” เพื่อคำนวณใหม่ตามข้อมูลปัจจุบัน';
+});
+document.getElementById('copy').addEventListener('click',()=>{
+ const txt='FF AIM AI\n'+document.getElementById('modePill').textContent+'\n'+document.getElementById('status').innerText+'\n'+[...document.querySelectorAll('.setting')].map(x=>x.innerText.replace('\n',' : ')).join('\n')+'\n'+document.getElementById('tip').textContent;
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(()=>alert('คัดลอกค่าตั้งค่าแล้ว')).catch(()=>fallbackCopy(txt))}
+ else fallbackCopy(txt);
+});
+function fallbackCopy(txt){const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');alert('คัดลอกค่าตั้งค่าแล้ว')}catch(e){alert(txt)}ta.remove()}
+</script>
+</body>
+</html>
